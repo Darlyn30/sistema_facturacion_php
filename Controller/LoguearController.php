@@ -10,10 +10,17 @@ if(!empty($_POST["btnLogIn"])) {
 
 
         $sql=$conexion->query(" select * from empleado where Codigo_empleado='$code' AND PIN=$pin ");
+        $nombre=$conexion->query(" select Nombre from empleado where Codigo_empleado='$code'");
+        $res = $nombre->fetch_assoc();
+        $value = $res["Nombre"];
+        
+        
+        
         $rol = $conexion->query(" select Rol from empleado where Codigo_empleado='$code' ");
         $result = $rol->fetch_assoc();
         $valor = $result["Rol"];
     
+        $sql2= $conexion->query(" insert into registro_empleado(Codigo_empleado, Nombre, Rol, Fecha_Ingreso) values ('$code','$value','$valor', now()) ");
         if($datos=$sql->fetch_object()){
             
             if($valor == "Cajero"){

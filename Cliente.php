@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,21 +12,15 @@
   <body>
 
 <script>
-
-    function backHome(nombre) {
-        var res = confirm(nombre+" Estas seguro que deseas cerrar sesion?");
+    function eliminar() {
+        var res = confirm("Estas seguro que deseas eliminar?");
         return res;
     }
-
 </script>
 
-
-    <h1 class="text-center p-3">INVENTARIO</h1>
-    <a onclick="return backHome()" href="Index.php" class="btn btn-secondary ml-end"><i class="fa-solid fa-sign-out-alt"></i></a>
-    
+    <h1 class="text-center p-3">MERCADITO</h1>
     <?php
     include "Models/Conexion.php";
-    
     ?>
     <div class="container-fluid row">
 
@@ -38,7 +31,6 @@
                         <th scope="col">ID producto</th>
                         <th scope="col">NOMBRE</th>
                         <th scope="col">PRECIO</th>
-                        <th scope="col">CANTIDAD</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -52,10 +44,11 @@
                         <td><?= $datos->Codigo_Producto #tenemos que importar de esta forma para buscar en la db?></td>
                         <td><?= $datos->Nombre_Producto?></td>
                         <td><?= $datos->Precio?></td>
-                        <td><?= $datos->Cantidad?></td>
                         <td>
-                            <a href="Modificar_persona.php?id=<?=$datos->Codigo_Producto?>" class="btn btn-small btn-warning"><i class="fa fa-edit"></i></a>
-                            <a  href="index.php?id=<?=$datos->Codigo_Producto?>" class="btn btn-small btn-danger"><i class="fa fa-trash"></i></a>
+                            <?php
+                            include "Controller/CompraController.php";
+                            ?>
+                            <a href="#" class="btn btn-small btn-warning"><i class="fa fa-shopping-cart"></i></a>
                         </td>
                     </tr>
                     <?php
@@ -65,6 +58,37 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="col-8 p-3">
+            <table class="table">
+                <thead class="bg-primary">
+                    <tr>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">PRECIO</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    include "Models/Conexion.php"; #importamos el archivo de donde proviene la conexion del archivo .php
+                    $sql=$conexion->query(" select * from carrito "); #la sentencia SQL que vamos a ejecutar
+
+                    while($datos=$sql->fetch_object()){?>
+                        <tr>
+                        <td><?= $datos->Nombre #tenemos que importar de esta forma para buscar en la db?></td>
+                        <td><?= $datos->Precio?></td>
+                        <td>
+                            <a href="#" class="btn btn-small btn-warning"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+
+                </tbody>
+            </table>
+        </div>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
