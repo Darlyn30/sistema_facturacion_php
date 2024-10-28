@@ -18,7 +18,12 @@
         }
     </script>
     <div class="container mt-5">
+
         <h2 class="mb-4">Sistema de Caja</h2>
+        <?php
+        include "Models/Conexion.php";
+        include "Controller/CajeroController.php";
+        ?>
         <a onclick="return backHome()" href="Index.php" class="btn btn-secondary ml-end"><i class="fa-solid fa-sign-out-alt"></i></a>
 
         <table class="table table-bordered">
@@ -26,19 +31,46 @@
                 <tr>
                     <th>Producto</th>
                     <th>Precio</th>
-                    <th>Cantidad</th>
                     <th>Subtotal</th>
-                    <th>Acciones</th>
+                    <th>IVA</th>
                 </tr>
             </thead>
             <tbody id="productList">
                 <!-- Productos añadidos aparecerán aquí -->
+
+                <?php
+                    include "Models/Conexion.php"; #importamos el archivo de donde proviene la conexion del archivo .php
+                    $sql2=$conexion->query(" select * from carrito "); #la sentencia SQL que vamos a ejecutar
+
+                    while($data=$sql2->fetch_object()){?>
+                        <tr>
+                        <td><?= $data->Nombre #tenemos que importar de esta forma para buscar en la db?></td>
+                        <td><?= $data->Precio?> USD</td>
+                        <td><?= $data->Precio?> USD</td>
+                        <td>1.40 USD</td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
             </tbody>
         </table>
 
         <div class="text-end">
-            <h4>Total: $<span id="totalAmount">0.00</span></h4>
-            <button class="btn btn-success mt-2" id="checkoutBtn">Realizar Pago</button>
+            <?php
+            $sql=$conexion->query(" select Precio from carrito ");
+            $data=$sql->fetch_object();
+            if($data != 1){
+                $total=0;
+            } else {
+
+                $total=$data->Precio + 1.40; #tengo un problema en esta parte, es que parece que estaria tomando un entero pero no se de donde
+            }
+            ?>
+            <h4>Total: $<span id="totalAmount"><?= $total?></span></h4>
+            <form action="" method="POST">
+
+                <button class="btn btn-success mt-2" name="btnPay" value="ok">Realizar Pago</button>
+            </form>
         </div>
     </div>
 

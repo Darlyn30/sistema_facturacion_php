@@ -4,6 +4,8 @@
 
 include "Models/Conexion.php";
 
-if(!empty($_POST[""])){}
+if(!empty($_POST["btnCart"])) {
+    
+}
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-
+#este controlador solo sirve para loguar y registrar el logueo del empleado
 
 if(!empty($_POST["btnLogIn"])) {
     if(!empty($_POST["code"] and !empty($_POST["pin"]))) {

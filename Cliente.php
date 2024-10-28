@@ -21,6 +21,7 @@
     <h1 class="text-center p-3">MERCADITO</h1>
     <?php
     include "Models/Conexion.php";
+    
     ?>
     <div class="container-fluid row">
 
@@ -43,18 +44,21 @@
                         <tr>
                         <td><?= $datos->Codigo_Producto #tenemos que importar de esta forma para buscar en la db?></td>
                         <td><?= $datos->Nombre_Producto?></td>
-                        <td><?= $datos->Precio?></td>
+                        <td><?= $datos->Precio?> USD</td>
                         <td>
                             <?php
                             include "Controller/CompraController.php";
                             ?>
-                            <a href="#" class="btn btn-small btn-warning"><i class="fa fa-shopping-cart"></i></a>
+                            <form action="" method="POST">
+                                <button type="submit" name="btnCart" value="ok" class="btn btn-samll btn-warning">
+                                <i class="fa fa-shopping-cart"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     <?php
                     }
                     ?>
-
                 </tbody>
             </table>
         </div>
@@ -71,22 +75,26 @@
                 <tbody>
                     <?php
                     include "Models/Conexion.php"; #importamos el archivo de donde proviene la conexion del archivo .php
-                    $sql=$conexion->query(" select * from carrito "); #la sentencia SQL que vamos a ejecutar
+                    $sql2=$conexion->query(" select * from carrito "); #la sentencia SQL que vamos a ejecutar
 
-                    while($datos=$sql->fetch_object()){?>
+                    while($data=$sql2->fetch_object()){?>
                         <tr>
-                        <td><?= $datos->Nombre #tenemos que importar de esta forma para buscar en la db?></td>
-                        <td><?= $datos->Precio?></td>
+                        <td><?= $data->Nombre #tenemos que importar de esta forma para buscar en la db?></td>
+                        <td><?= $data->Precio?> USD</td>
                         <td>
-                            <a href="#" class="btn btn-small btn-warning"><i class="fa fa-trash"></i></a>
+                            <a onclick="return eliminar()" href="Cliente.php?id=<?=$data->id?>" class="btn btn-small btn-danger"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                     <?php
                     }
                     ?>
-
                 </tbody>
             </table>
+
+
+            <form action="" method="POST">
+                <button class="btn btn-primary" name="btnPush">IR A CAJA</button>
+            </form>
         </div>
 
     </div>
