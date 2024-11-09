@@ -11,12 +11,7 @@
 </head>
   <body>
 
-<script>
-    function eliminar() {
-        var res = confirm("Estas seguro que deseas eliminar?");
-        return res;
-    }
-</script>
+
 
     <h1 class="text-center p-3">MERCADITO</h1>
     <?php
@@ -41,16 +36,20 @@
                     $sql=$conexion->query(" select * from inventario "); #la sentencia SQL que vamos a ejecutar
 
                     while($datos=$sql->fetch_object()){?>
+                        
                         <tr>
                         <td><?= $datos->Codigo_Producto #tenemos que importar de esta forma para buscar en la db?></td>
                         <td><?= $datos->Nombre_Producto?></td>
                         <td><?= $datos->Precio?> USD</td>
                         <td>
                             <?php
+                            
                             include "Controller/CompraController.php";
                             ?>
                             <form action="" method="POST">
                                 <button type="submit" name="btnCart" value="ok" class="btn btn-samll btn-warning">
+                                <input type="hidden" name="id" id="" value="<?=$datos->Codigo_Producto?>" readonly>
+                                
                                 <i class="fa fa-shopping-cart"></i>
                                 </button>
                             </form>
@@ -64,6 +63,7 @@
         </div>
 
         <div class="col-8 p-3">
+            <h1>CARRITO</h1>
             <table class="table">
                 <thead class="bg-primary">
                     <tr>
@@ -82,7 +82,17 @@
                         <td><?= $data->Nombre #tenemos que importar de esta forma para buscar en la db?></td>
                         <td><?= $data->Precio?> USD</td>
                         <td>
-                            <a onclick="return eliminar()" href="Cliente.php?id=<?=$data->id?>" class="btn btn-small btn-danger"><i class="fa fa-trash"></i></a>
+                            <?php
+                            include "Models/Conexion.php";
+                            include "Controller/EliminarCarrito.php";
+                            ?>
+                             <form action="" method="POST">
+                                <button type="submit" name="btnDeleteCart" value="ok" class="btn btn-samll btn-danger">
+                                <input type="hidden" name="idCart" id="" value="<?=$data->Codigo_Producto?>" readonly>
+                                
+                                <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     <?php
@@ -92,9 +102,6 @@
             </table>
 
 
-            <form action="" method="POST">
-                <button class="btn btn-primary" name="btnPush">IR A CAJA</button>
-            </form>
         </div>
 
     </div>

@@ -47,7 +47,7 @@
                         <td><?= $data->Nombre #tenemos que importar de esta forma para buscar en la db?></td>
                         <td><?= $data->Precio?> USD</td>
                         <td><?= $data->Precio?> USD</td>
-                        <td>1.40 USD</td>
+                        <td><?=$data->IVA #esto es un valor constante para todas las compras?></td>
                     </tr>
                     <?php
                     }
@@ -57,13 +57,14 @@
 
         <div class="text-end">
             <?php
-            $sql=$conexion->query(" select Precio from carrito ");
+            $sql=$conexion->query(" select SUM(Precio) * SUM(IVA) as total from carrito ");
             $data=$sql->fetch_object();
-            if($data != 1){
-                $total=0;
-            } else {
 
-                $total=$data->Precio + 1.40; #tengo un problema en esta parte, es que parece que estaria tomando un entero pero no se de donde
+            if($data->total === null){ #si el precio es 0, total es 0
+                $total = 0;
+            } else {
+                #debo llamar a la columna "total" ya que es el alias que le doy en la consulta
+                $total=$data->total; 
             }
             ?>
             <h4>Total: $<span id="totalAmount"><?= $total?></span></h4>
